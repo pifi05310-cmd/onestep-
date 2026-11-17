@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>한걸음 — ADHD 및 일상을 위한 생활 관리 앱 (Free & Pro)</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F3F4F6;
+      color: #1E293B;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .app-shell {
+      background-color: #FAF9F6;
+      min-height: 100dvh;
+      transition: background-color 0.2s ease, font-size 0.2s ease;
+    }
+    .app-shell.dark-calm {
+      background-color: #18181B;
+      color: #F4F4F5;
+    }
+    .app-shell.dark-calm header,
+    .app-shell.dark-calm nav {
+      background-color: rgba(24, 24, 27, 0.95);
+      border-color: #27272A;
+    }
+    .app-shell.dark-calm .bg-white {
+      background-color: #27272A !important;
+      border-color: #3F3F46 !important;
+      color: #F4F4F5 !important;
+    }
+    .app-shell.dark-calm .text-slate-900,
+    .app-shell.dark-calm .text-slate-800,
+    .app-shell.dark-calm .text-slate-700 {
+      color: #F4F4F5 !important;
+    }
+    .app-shell.dark-calm .text-slate-600,
+    .app-shell.dark-calm .text-slate-500 {
+      color: #A1A1AA !important;
+    }
+    .app-shell.large-text {
+      font-size: 1.08rem;
+    }
+    .ring-transition {
+      transition: stroke-dashoffset 0.5s linear;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .pop-in {
+      animation: popIn 0.2s ease-out forwards;
+    }
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-teal-100 selection:text-teal-900">
+  <div id="app-shell" class="app-shell max-w-md mx-auto relative flex flex-col shadow-xl border-x border-stone-200/80">
+    <!-- Top Header -->
+    <header class="sticky top-0 z-20 bg-[#FAF9F6]/95 backdrop-blur border-b border-stone-200/80 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div id="brand-logo" class="w-9 h-9 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          1
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-base font-bold text-slate-900 leading-tight">한걸음</h1>
+            <button id="btn-plan-badge" type="button" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-200 text-slate-700 hover:bg-amber-100 hover:text-amber-800 transition">
+              무료
+            </button>
+          </div>
+          <p id="header-date" class="text-xs text-slate-500">오늘도 한 번에 하나씩</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <div class="px-2.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold flex items-center gap-1" title="완료한 할 일 / 오늘 집중 시간">
+          <span>완료</span>
+          <span id="header-done-count">0</span>
+          <span class="text-teal-400">·</span>
+          <span id="header-focus-mins">0분</span>
+        </div>
+        <button id="btn-open-settings" type="button" aria-label="설정 및 초기화" class="w-9 h-9 rounded-xl border border-stone-200 bg-white text-slate-600 hover:bg-stone-100 flex items-center justify-center transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="flex-1 px-4 pt-4 pb-24 space-y-4 overflow-y-auto">
+      <!-- TAB 1: TODAY -->
+      <section id="view-today" class="space-y-3.5">
+        <!-- Now Focus Card -->
+        <div id="now-focus-card" class="rounded-2xl bg-gradient-to-br from-teal-700 to-teal-800 text-white p-4 shadow-md">
+          <div class="flex items-center justify-between mb-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-xs font-medium">
+              <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+              지금 당장 1가지만
+            </span>
+            <span id="now-energy-badge" class="text-xs text-teal-100 font-medium"></span>
+          </div>
+          <div id="now-focus-content">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Free Practical Feature: 10-Second Leave-Home Pocket Check -->
+        <div class="bg-white rounded-2xl p-3 border border-stone-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">🔑 외출 전 10초 소지품 확인</span>
+            <button id="btn-reset-pocket" type="button" class="text-[11px] text-slate-400 hover:text-teal-700 font-medium">초기화</button>
+          </div>
+          <div id="pocket-checklist" class="flex flex-wrap gap-1.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Quick Add Task -->
+        <form id="task-form" class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-sm space-y-2.5">
+          <div class="flex gap-2">
+            <input
+              id="task-input"
+              type="text"
+              placeholder="해야 할 일을 짧게 적어보세요..."
+              class="flex-1 px-3 py-2.5 text-sm rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white text-slate-900"
+              required
+            />
+            <button
+              type="submit"
+              class="px-4 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold transition shrink-0"
+            >
+              추가
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-1" role="group" aria-label="필요 에너지">
+              <span class="text-[11px] text-slate-500 mr-0.5">에너지</span>
+              <button type="button" data-energy="low" class="energy-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-300">가벼움</button>
+              <button type="button" data-energy="mid" class="energy-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">보통</button>
+              <button type="button" data-energy="high" class="energy-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">집중</button>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button id="btn-toggle-details" type="button" class="text-xs text-slate-600 font-medium hover:text-teal-700">
+                ⚙ 세부 설정
+              </button>
+              <button id="btn-toggle-templates" type="button" class="text-xs text-teal-700 font-medium hover:underline">
+                + 자주 쓰는 묶음
+              </button>
+            </div>
+          </div>
+
+          <div id="task-details-drawer" class="hidden pt-2.5 border-t border-stone-100 grid grid-cols-3 gap-2">
+            <div>
+              <label for="task-slot" class="block text-[11px] text-slate-500 mb-1">언제 할까요</label>
+              <select id="task-slot" class="w-full px-2 py-1.5 rounded-lg bg-stone-50 border border-stone-200 text-xs text-slate-700">
+                <option value="now">지금 당장</option>
+                <option value="morning">오전</option>
+                <option value="afternoon">오후</option>
+                <option value="evening">저녁</option>
+              </select>
+            </div>
+            <div>
+              <label for="task-category" class="block text-[11px] text-slate-500 mb-1">영역</label>
+              <select id="task-category" class="w-full px-2 py-1.5 rounded-lg bg-stone-50 border border-stone-200 text-xs text-slate-700">
+                <option value="생활">생활·집안일</option>
+                <option value="업무">업무·공부</option>
+                <option value="건강">건강·병원</option>
+                <option value="약속">약속·행정</option>
+              </select>
+            </div>
+            <div>
+              <label for="task-mins" class="block text-[11px] text-slate-500 mb-1">예상 시간</label>
+              <select id="task-mins" class="w-full px-2 py-1.5 rounded-lg bg-stone-50 border border-stone-200 text-xs text-slate-700">
+                <option value="5">5분</option>
+                <option value="15" selected>15분</option>
+                <option value="30">30분</option>
+                <option value="60">1시간</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="templates-drawer" class="hidden pt-2 border-t border-stone-100 flex flex-wrap gap-1.5">
+            <button type="button" data-template="clean" class="template-btn px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-medium border border-amber-200">
+              🧹 책상 5분 정리
+            </button>
+            <button type="button" data-template="outing" class="template-btn px-2.5 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-900 text-xs font-medium border border-sky-200">
+              🎒 외출 전 3가지
+            </button>
+            <button type="button" data-template="work" class="template-btn px-2.5 py-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-violet-900 text-xs font-medium border border-violet-200">
+              💻 업무 시동 걸기
+            </button>
+            <button type="button" data-template="admin" class="template-btn px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-medium border border-emerald-200">
+              🧾 공과금·서류 처리
+            </button>
+          </div>
+        </form>
+
+        <!-- Energy & Category Filters -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5">
+              <button type="button" data-filter="all" class="filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800 text-white">전체</button>
+              <button type="button" data-filter="low" class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-stone-200 text-slate-600">가벼움</button>
+              <button type="button" data-filter="mid" class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-stone-200 text-slate-600">보통</button>
+              <button type="button" data-filter="high" class="filter-btn px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-stone-200 text-slate-600">집중</button>
+            </div>
+            <span id="task-counter" class="text-xs text-slate-500 shrink-0 ml-2">0개 남음</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5">
+            <button type="button" data-cat-filter="all" class="cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-teal-700 text-white">모든 영역</button>
+            <button type="button" data-cat-filter="생활" class="cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white border border-stone-200 text-slate-600">생활</button>
+            <button type="button" data-cat-filter="업무" class="cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white border border-stone-200 text-slate-600">업무·공부</button>
+            <button type="button" data-cat-filter="건강" class="cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white border border-stone-200 text-slate-600">건강</button>
+            <button type="button" data-cat-filter="약속" class="cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white border border-stone-200 text-slate-600">약속·행정</button>
+          </div>
+        </div>
+
+        <!-- Task List -->
+        <div id="task-list" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- TAB 2: FOCUS TIMER -->
+      <section id="view-focus" class="hidden space-y-3.5">
+        <div class="grid grid-cols-3 gap-1.5 bg-stone-200/70 p-1 rounded-2xl">
+          <button type="button" data-mode="focus" class="mode-btn py-2 rounded-xl text-xs font-bold bg-white text-teal-800 shadow-xs">집중</button>
+          <button type="button" data-mode="shortBreak" class="mode-btn py-2 rounded-xl text-xs font-medium text-slate-600">짧은 휴식 (5분)</button>
+          <button type="button" data-mode="longBreak" class="mode-btn py-2 rounded-xl text-xs font-medium text-slate-600">긴 휴식 (15분)</button>
+        </div>
+
+        <div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm text-center space-y-4">
+          <div class="flex items-center justify-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 text-[11px] font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              지금 함께 집중 중 · <span id="body-double-count">124</span>명
+            </span>
+          </div>
+          <div>
+            <p id="timer-mode-eyebrow" class="text-xs font-medium text-teal-700 uppercase tracking-wider mb-1">현재 집중할 작업</p>
+            <h2 id="timer-task-title" class="text-base font-bold text-slate-900 truncate px-2">자유 집중 시간</h2>
+          </div>
+
+          <div class="relative w-52 h-52 mx-auto flex items-center justify-center">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="88" fill="none" stroke="#E2E8F0" stroke-width="12" />
+              <circle
+                id="timer-ring"
+                cx="100"
+                cy="100"
+                r="88"
+                fill="none"
+                stroke="#0F766E"
+                stroke-width="12"
+                stroke-linecap="round"
+                stroke-dasharray="552.92"
+                stroke-dashoffset="0"
+                class="ring-transition"
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="timer-display" class="text-4xl font-bold tracking-tight text-slate-900 tabular-nums">05:00</span>
+              <span id="timer-status-label" class="text-xs text-slate-500 mt-1">준비됨 · 부담 없이 시작</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="grid grid-cols-4 gap-2">
+              <button type="button" data-mins="5" class="preset-btn py-2 rounded-xl text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-300">5분 시작</button>
+              <button type="button" data-mins="15" class="preset-btn py-2 rounded-xl text-xs font-medium bg-stone-100 text-slate-700 hover:bg-stone-200">15분</button>
+              <button type="button" data-mins="25" class="preset-btn py-2 rounded-xl text-xs font-medium bg-stone-100 text-slate-700 hover:bg-stone-200">25분</button>
+              <button type="button" data-mins="45" class="preset-btn py-2 rounded-xl text-xs font-medium bg-stone-100 text-slate-700 hover:bg-stone-200">45분</button>
+            </div>
+            <div class="flex items-center justify-center gap-2">
+              <button id="btn-minus-1m" type="button" class="px-3 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-xs font-medium text-slate-600">- 1분</button>
+              <button id="btn-plus-1m" type="button" class="px-3 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-xs font-medium text-slate-600">+ 1분</button>
+            </div>
+          </div>
+
+          <!-- Pro Auto-Cycle Toggle -->
+          <div class="flex items-center justify-between bg-stone-50 rounded-xl px-3 py-2 text-xs">
+            <span class="text-slate-700 font-medium">🔄 집중 후 자동 휴식 전환 <span class="pro-lock text-[10px] text-amber-700 font-bold">PRO</span></span>
+            <button id="btn-auto-cycle" type="button" class="px-2.5 py-1 rounded-lg bg-stone-200 text-slate-700 text-[11px] font-semibold">꺼짐</button>
+          </div>
+
+          <div class="flex items-center justify-center gap-3 pt-1">
+            <button id="btn-timer-reset" type="button" class="px-4 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-700 text-sm font-semibold transition">
+              초기화
+            </button>
+            <button id="btn-timer-toggle" type="button" class="flex-1 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-sm font-bold shadow-sm transition">
+              시작하기
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-xs space-y-2">
+          <p class="text-xs font-bold text-slate-700">시작 전 3초 세팅</p>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 text-xs text-slate-600 bg-stone-50 px-2.5 py-2 rounded-xl cursor-pointer">
+              <input type="checkbox" class="rounded text-teal-700 focus:ring-teal-600" />
+              <span>💧 물 한 잔 옆에 두기</span>
+            </label>
+            <label class="flex items-center gap-2 text-xs text-slate-600 bg-stone-50 px-2.5 py-2 rounded-xl cursor-pointer">
+              <input type="checkbox" class="rounded text-teal-700 focus:ring-teal-600" />
+              <span>📵 방해 알림 잠시 끄기</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-slate-900">집중 배경음</p>
+                <p class="text-xs text-slate-500">주변 소음을 가려주는 잔잔한 소리</p>
+              </div>
+            </div>
+            <button id="btn-sound-toggle" type="button" aria-pressed="false" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-100 text-slate-700 hover:bg-stone-200 transition">
+              꺼짐
+            </button>
+          </div>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button type="button" data-sound="off" class="sound-type-btn py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-white">끄기</button>
+            <button type="button" data-sound="wind" class="sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-stone-100 text-slate-600">부드러운 바람</button>
+            <button type="button" data-sound="rain" class="sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-stone-100 text-slate-600">잔잔한 빗소리</button>
+            <button type="button" data-sound="fire" data-pro="true" class="sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-amber-50/70 text-amber-900 border border-amber-200">🔥 모닥불 <span class="pro-lock text-[10px]">PRO</span></button>
+            <button type="button" data-sound="cafe" data-pro="true" class="sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-amber-50/70 text-amber-900 border border-amber-200 col-span-2">☕ 카페 화이트노이즈 <span class="pro-lock text-[10px]">PRO</span></button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-slate-800">🌬️ 1분 진정 호흡 (4-4-4 리셋)</p>
+              <p id="breath-guide-text" class="text-[11px] text-slate-500">산만하거나 답답할 때 4초씩 천천히</p>
+            </div>
+            <button id="btn-breath-toggle" type="button" class="px-3 py-1.5 rounded-xl bg-teal-50 text-teal-800 border border-teal-200 text-xs font-semibold">시작</button>
+          </div>
+          <div class="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
+            <div id="breath-bar" class="h-full bg-teal-600 transition-all duration-1000" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="bg-stone-100/80 rounded-2xl p-3.5 border border-stone-200 flex items-center justify-between text-xs text-slate-600">
+          <span>오늘 완료한 집중 세션</span>
+          <span class="font-bold text-slate-900"><span id="focus-sessions-count">0</span>회 · 총 <span id="focus-total-mins">0</span>분</span>
+        </div>
+      </section>
+
+      <!-- TAB 3: BRAIN DUMP -->
+      <section id="view-dump" class="hidden space-y-3.5">
+        <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-3.5 text-xs text-amber-900 leading-relaxed">
+          머릿속에 갑자기 떠오른 생각, 살 것, 기억할 일을 잊기 전에 바로 적어두세요. 복사하거나 원터치로 할 일로 보낼 수 있습니다.
+        </div>
+
+        <form id="dump-form" class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-sm space-y-2.5">
+          <textarea
+            id="dump-input"
+            rows="2"
+            placeholder="지금 떠오른 생각을 자유롭게 적으세요..."
+            class="w-full px-3 py-2 text-sm rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:bg-white resize-none text-slate-900"
+            required
+          ></textarea>
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-1 flex-wrap">
+              <button type="button" data-tag="아이디어" class="tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-teal-50 text-teal-800 border border-teal-300">아이디어</button>
+              <button type="button" data-tag="살 것" class="tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">살 것</button>
+              <button type="button" data-tag="할 일" class="tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">할 일</button>
+              <button type="button" data-tag="기억할 것" class="tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">기억할 것</button>
+              <button type="button" data-tag="기타" class="tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent">기타</button>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="flex items-center gap-1 text-xs text-slate-600 cursor-pointer">
+                <input id="dump-urgent" type="checkbox" class="rounded text-amber-600 focus:ring-amber-500" />
+                <span>중요 ★</span>
+              </label>
+              <button type="submit" class="px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold transition shrink-0">
+                저장
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div class="space-y-2">
+          <input
+            id="dump-search"
+            type="search"
+            placeholder="메모 검색..."
+            class="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-stone-200 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-900"
+          />
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5">
+            <button type="button" data-dump-filter="all" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-800 text-white">전체</button>
+            <button type="button" data-dump-filter="urgent" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-amber-700">★ 중요만</button>
+            <button type="button" data-dump-filter="아이디어" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-slate-600">아이디어</button>
+            <button type="button" data-dump-filter="살 것" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-slate-600">살 것</button>
+            <button type="button" data-dump-filter="할 일" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-slate-600">할 일</button>
+            <button type="button" data-dump-filter="기억할 것" class="dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-slate-600">기억할 것</button>
+          </div>
+        </div>
+
+        <div id="dump-list" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- TAB 4: ROUTINES -->
+      <section id="view-routines" class="hidden space-y-3.5">
+        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-slate-900">오늘의 루틴 달성률</span>
+            <span id="routine-progress-text" class="text-sm font-bold text-teal-700">0%</span>
+          </div>
+          <div class="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden">
+            <div id="routine-progress-bar" class="h-full bg-teal-600 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <div class="flex justify-end pt-1">
+            <button id="btn-reset-routines" type="button" class="text-xs text-slate-500 hover:text-teal-700 font-medium">
+              오늘 체크 모두 비우기
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">💊 약 · 영양제 복용 체크</span>
+            <span class="text-[11px] text-slate-400">먹었는지 헷갈릴 때</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2" id="med-tracker">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-800">💧 오늘 물 마시기 (<span id="water-count">0</span>/8잔)</span>
+            <button id="btn-water-reset" type="button" class="text-[11px] text-slate-400 hover:text-teal-700">비우기</button>
+          </div>
+          <div id="water-tracker" class="grid grid-cols-8 gap-1.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <form id="routine-form" class="bg-white rounded-2xl p-3.5 border border-stone-200 shadow-sm space-y-2">
+          <div class="flex gap-2 items-center">
+            <select id="routine-period" aria-label="시간대" class="px-2.5 py-2.5 rounded-xl bg-stone-50 border border-stone-200 text-xs font-medium text-slate-700 focus:outline-none">
+              <option value="morning">아침 기상</option>
+              <option value="day">낮 · 외출</option>
+              <option value="evening">저녁 귀가</option>
+              <option value="night">잠들기 전</option>
+            </select>
+            <input
+              id="routine-input"
+              type="text"
+              placeholder="매일 반복할 작은 습관..."
+              class="flex-1 px-3 py-2.5 text-sm rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-900"
+              required
+            />
+            <button type="submit" class="px-3.5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold shrink-0">
+              추가
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] text-slate-500">반복:</span>
+            <select id="routine-repeat" aria-label="반복 요일" class="px-2 py-1 rounded-lg bg-stone-50 border border-stone-200 text-xs text-slate-700">
+              <option value="매일">매일</option>
+              <option value="평일">평일만</option>
+              <option value="주말">주말만</option>
+            </select>
+          </div>
+        </form>
+
+        <div id="routine-lists" class="space-y-4">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- TAB 5: REPORT & DEADLINES (무료 요약 + Pro 주간 리포트 & 마감일 지킴이) -->
+      <section id="view-report" class="hidden space-y-3.5">
+        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-sm font-bold text-slate-900">오늘 내 컨디션은 어떤가요?</h2>
+            <span id="mood-saved-label" class="text-[11px] text-slate-400">선택해 주세요</span>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-mood="low" class="mood-btn py-2.5 px-2 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700 hover:bg-stone-100">🪫 방전·피곤</button>
+            <button type="button" data-mood="ok" class="mood-btn py-2.5 px-2 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700 hover:bg-stone-100">😌 무난·보통</button>
+            <button type="button" data-mood="good" class="mood-btn py-2.5 px-2 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700 hover:bg-stone-100">⚡ 집중·좋음</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-white rounded-2xl p-3 border border-stone-200 text-center">
+            <p class="text-[11px] text-slate-500">완료한 일</p>
+            <p id="rep-done-tasks" class="text-lg font-bold text-teal-700 mt-0.5">0개</p>
+          </div>
+          <div class="bg-white rounded-2xl p-3 border border-stone-200 text-center">
+            <p class="text-[11px] text-slate-500">집중 시간</p>
+            <p id="rep-focus-mins" class="text-lg font-bold text-amber-600 mt-0.5">0분</p>
+          </div>
+          <div class="bg-white rounded-2xl p-3 border border-stone-200 text-center">
+            <p class="text-[11px] text-slate-500">루틴 달성</p>
+            <p id="rep-routine-pct" class="text-lg font-bold text-slate-800 mt-0.5">0%</p>
+          </div>
+        </div>
+
+        <!-- Pro Practical Feature: Recurring Bills & Appointment D-Day Keeper -->
+        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold mb-1">PRO 마감일 지킴이</span>
+              <h3 class="text-sm font-bold text-slate-900">깜빡하기 쉬운 납부·예약 D-Day</h3>
+            </div>
+          </div>
+          <form id="bill-form" class="flex gap-1.5">
+            <input id="bill-title" type="text" placeholder="예: 통신비, 병원 예약" class="flex-1 px-2.5 py-2 text-xs rounded-xl bg-stone-50 border border-stone-200 text-slate-900" required />
+            <input id="bill-day" type="number" min="1" max="31" placeholder="일" class="w-14 px-2 py-2 text-xs rounded-xl bg-stone-50 border border-stone-200 text-slate-900" required />
+            <button type="submit" class="px-3 py-2 rounded-xl bg-teal-700 text-white text-xs font-semibold shrink-0">추가</button>
+          </form>
+          <div id="bill-list" class="space-y-1.5">
+            <!-- Populated by JS -->
+          </div>
+          <div id="pro-bill-lock" class="hidden absolute inset-0 bg-[#FAF9F6]/85 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center space-y-2">
+            <p class="text-xs font-bold text-slate-900">🔒 납부·병원 예약 D-Day 관리는 Pro 기능입니다</p>
+            <button type="button" data-open-pro="true" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold">Pro로 잠금 해제</button>
+          </div>
+        </div>
+
+        <!-- Pro Weekly Report Card -->
+        <div id="pro-report-card" class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm space-y-3 relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold mb-1">PRO 리포트</span>
+              <h3 class="text-sm font-bold text-slate-900">최근 7일 집중 · 루틴 흐름</h3>
+            </div>
+            <span id="rep-streak" class="text-xs font-bold text-teal-700">연속 3일째</span>
+          </div>
+
+          <div id="weekly-chart" class="grid grid-cols-7 gap-1.5 items-end h-28 pt-2 border-b border-stone-100 pb-2">
+            <!-- Populated by JS -->
+          </div>
+          <p id="rep-insight" class="text-xs text-slate-600 bg-stone-50 rounded-xl p-2.5 leading-relaxed">
+            <!-- Populated by JS -->
+          </p>
+
+          <div id="pro-report-lock" class="hidden absolute inset-0 bg-[#FAF9F6]/85 backdrop-blur-xs flex flex-col items-center justify-center p-5 text-center space-y-2.5">
+            <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-lg">🔒</div>
+            <p class="text-sm font-bold text-slate-900">주간 패턴 분석은 Pro 기능입니다</p>
+            <p class="text-xs text-slate-600">요일별 집중 시간, 연속 달성 기록, 맞춤 피드백을 확인해 보세요.</p>
+            <button type="button" data-open-pro="true" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-sm transition">
+              Pro 7일 무료 체험 열기
+            </button>
+          </div>
+        </div>
+
+        <!-- Pro Banner -->
+        <div id="report-pro-banner" class="rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-white p-4 shadow-sm flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs font-bold">한걸음 Pro로 더 가볍게 관리하세요</p>
+            <p class="text-[11px] text-amber-100 mt-0.5">주간 리포트 · 마감일 지킴이 · 자동 휴식 · 다크 모드</p>
+          </div>
+          <button type="button" data-open-pro="true" class="px-3 py-2 rounded-xl bg-white text-amber-700 text-xs font-bold shrink-0">
+            자세히
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Navigation Bar (5 Tabs) -->
+    <nav aria-label="하단 메뉴" class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/95 backdrop-blur border-t border-stone-200 px-1.5 py-1.5 z-30 grid grid-cols-5 gap-0.5">
+      <button type="button" data-tab="today" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-teal-700 font-semibold">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        </svg>
+        <span class="text-[10px]">오늘</span>
+      </button>
+      <button type="button" data-tab="focus" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 hover:text-slate-800">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-[10px]">타이머</span>
+      </button>
+      <button type="button" data-tab="dump" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 hover:text-slate-800">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        <span class="text-[10px]">생각메모</span>
+      </button>
+      <button type="button" data-tab="routines" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 hover:text-slate-800">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span class="text-[10px]">루틴</span>
+      </button>
+      <button type="button" data-tab="report" class="nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 hover:text-slate-800">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span class="text-[10px]">리포트</span>
+      </button>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="pointer-events-none fixed bottom-20 left-1/2 -translate-x-1/2 z-40 px-4 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-medium shadow-lg opacity-0 transition-opacity duration-200 whitespace-nowrap">
+      알림
+    </div>
+
+    <!-- Pro Upgrade Modal with Free vs Pro Comparison -->
+    <div id="pro-modal" class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl space-y-3.5 pop-in max-h-[90dvh] overflow-y-auto">
+        <div class="flex items-start justify-between">
+          <div>
+            <span class="inline-block px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold mb-1">한걸음 PRO</span>
+            <h3 class="text-lg font-bold text-slate-900">무료 vs Pro 기능 비교</h3>
+          </div>
+          <button id="btn-close-pro" type="button" class="text-slate-400 hover:text-slate-700 text-sm font-semibold">닫기</button>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="rounded-xl border border-stone-200 overflow-hidden text-[11px]">
+          <div class="grid grid-cols-3 bg-stone-100 font-bold text-slate-700 px-3 py-2">
+            <span>기능</span>
+            <span class="text-center">무료</span>
+            <span class="text-center text-amber-700">PRO ✨</span>
+          </div>
+          <div class="divide-y divide-stone-100 text-slate-600">
+            <div class="grid grid-cols-3 px-3 py-2"><span>할 일·3단계 쪼개기·외출체크</span><span class="text-center font-semibold text-teal-700">무제한</span><span class="text-center font-semibold text-teal-700">무제한</span></div>
+            <div class="grid grid-cols-3 px-3 py-2"><span>타이머·바람/빗소리</span><span class="text-center">기본 2종</span><span class="text-center font-semibold text-amber-700">모닥불·카페+자동휴식</span></div>
+            <div class="grid grid-cols-3 px-3 py-2"><span>납부·병원 예약 D-Day</span><span class="text-center text-slate-400">—</span><span class="text-center font-semibold text-amber-700">지원 ✓</span></div>
+            <div class="grid grid-cols-3 px-3 py-2"><span>7일 주간 리포트</span><span class="text-center text-slate-400">—</span><span class="text-center font-semibold text-amber-700">지원 ✓</span></div>
+            <div class="grid grid-cols-3 px-3 py-2"><span>다크 모드·큰 글씨·백업</span><span class="text-center text-slate-400">—</span><span class="text-center font-semibold text-amber-700">지원 ✓</span></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" data-billing="monthly" class="billing-btn p-3 rounded-xl border border-stone-200 bg-stone-50 text-left">
+            <p class="text-[11px] text-slate-500">월간 구독</p>
+            <p class="text-sm font-bold text-slate-900 mt-0.5">월 4,900원</p>
+          </button>
+          <button type="button" data-billing="yearly" class="billing-btn p-3 rounded-xl border-2 border-amber-500 bg-amber-50/50 text-left relative">
+            <span class="absolute -top-2 right-2 px-1.5 py-0.5 rounded-full bg-amber-500 text-white text-[9px] font-bold">33% 할인</span>
+            <p class="text-[11px] text-amber-800 font-medium">연간 구독</p>
+            <p class="text-sm font-bold text-slate-900 mt-0.5">연 39,000원</p>
+          </button>
+        </div>
+
+        <div id="pro-action-area" class="space-y-1.5">
+          <button id="btn-activate-pro" type="button" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold shadow-sm transition">
+            7일 무료 체험 시작하기 (즉시 활성화)
+          </button>
+          <p class="text-[10px] text-center text-slate-400">프로토타입 체험용으로 실제 결제는 발생하지 않습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl space-y-4 pop-in max-h-[90dvh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-slate-900">앱 설정 및 멤버십</h3>
+          <button id="btn-close-settings" type="button" class="text-slate-400 hover:text-slate-700 text-sm font-semibold">닫기</button>
+        </div>
+
+        <div class="space-y-1.5">
+          <p class="text-xs font-bold text-slate-700">화면 컬러 테마 <span class="text-[10px] text-amber-700 font-semibold">PRO</span></p>
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" data-theme="teal" class="theme-btn py-2 rounded-xl text-xs font-semibold border border-teal-600 bg-teal-50 text-teal-800">세이지</button>
+            <button type="button" data-theme="indigo" data-pro="true" class="theme-btn py-2 rounded-xl text-xs font-medium border border-stone-200 bg-stone-50 text-slate-700">라벤더</button>
+            <button type="button" data-theme="slate" data-pro="true" class="theme-btn py-2 rounded-xl text-xs font-medium border border-stone-200 bg-stone-50 text-slate-700">슬레이트</button>
+          </div>
+        </div>
+
+        <!-- Pro Accessibility Toggles -->
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-toggle-dark" type="button" class="py-2 px-3 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700">🌙 다크 모드 <span class="pro-lock text-[10px]">PRO</span></button>
+          <button id="btn-toggle-large" type="button" class="py-2 px-3 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700">🔠 큰 글씨 <span class="pro-lock text-[10px]">PRO</span></button>
+        </div>
+
+        <div class="space-y-2 pt-1 border-t border-stone-100">
+          <button id="btn-export-data" type="button" class="w-full py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-semibold border border-amber-200 transition">
+            📥 내 기록 JSON 백업 내보내기 (PRO)
+          </button>
+          <label class="block w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-semibold text-center cursor-pointer transition">
+            📤 백업 파일(JSON) 불러오기
+            <input id="input-import-data" type="file" accept=".json,application/json" class="hidden" />
+          </label>
+          <button id="btn-toggle-plan-dev" type="button" class="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-semibold transition">
+            무료 / Pro 버전 전환하기
+          </button>
+          <button id="btn-clear-done" type="button" class="w-full py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-800 text-xs font-semibold transition">
+            완료된 할 일만 정리하기
+          </button>
+          <button id="btn-reset-all" type="button" class="w-full py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition">
+            기본 샘플 데이터로 초기화
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'onestep_adhd_app_v4';
+
+      const DEFAULT_STATE = {
+        activeTab: 'today',
+        isPro: false,
+        billingPlan: 'yearly',
+        theme: 'teal',
+        darkMode: false,
+        largeText: false,
+        autoCycle: false,
+        mood: null,
+        selectedEnergy: 'low',
+        filterEnergy: 'all',
+        filterCategory: 'all',
+        selectedTag: '아이디어',
+        dumpFilter: 'all',
+        dumpSearch: '',
+        focusSessions: 0,
+        focusTotalMins: 0,
+        timerMode: 'focus',
+        soundType: 'off',
+        activeFocusTaskId: null,
+        pocket: [
+          { id: 'p1', label: '🔑 열쇠', done: false },
+          { id: 'p2', label: '💳 지갑·카드', done: false },
+          { id: 'p3', label: '📱 휴대폰', done: false },
+          { id: 'p4', label: '🎧 이어폰', done: false },
+          { id: 'p5', label: '💊 약·물병', done: false }
+        ],
+        bills: [
+          { id: 'b1', title: '휴대폰 통신비 자동이체 확인', day: 25, done: false },
+          { id: 'b2', title: '치과 정기 검진 예약', day: 28, done: false }
+        ],
+        meds: { morning: false, noon: false, evening: false },
+        waterGlasses: 0,
+        weeklyFocus: [20, 35, 15, 45, 30, 50, 0],
+        tasks: [
+          {
+            id: 't1',
+            title: '책상 위 빈 컵 1개만 싱크대로 옮기기',
+            energy: 'low',
+            slot: 'now',
+            category: '생활',
+            estMins: 5,
+            done: false,
+            pinned: true,
+            steps: [
+              { id: 's1', text: '자리에서 일어나기', done: false },
+              { id: 's2', text: '컵만 들고 싱크대에 두기', done: false }
+            ]
+          },
+          {
+            id: 't2',
+            title: '밀린 메시지 1통만 간단히 답장하기',
+            energy: 'mid',
+            slot: 'afternoon',
+            category: '약속',
+            estMins: 10,
+            done: false,
+            pinned: false,
+            steps: []
+          },
+          {
+            id: 't3',
+            title: '내일 일정 3분만 미리 훑어보기',
+            energy: 'high',
+            slot: 'evening',
+            category: '업무',
+            estMins: 15,
+            done: false,
+            pinned: false,
+            steps: []
+          }
+        ],
+        dumps: [
+          { id: 'd1', text: '치약 다 떨어져 감 — 마트 들를 때 사기', tag: '살 것', urgent: true, createdAt: '방금 전' },
+          { id: 'd2', text: '주말에 15분 산책 코스 찾아보기', tag: '아이디어', urgent: false, createdAt: '오늘' }
+        ],
+        routines: [
+          { id: 'r1', period: 'morning', repeat: '매일', title: '물 한 잔 마시기', done: false },
+          { id: 'r2', period: 'morning', repeat: '매일', title: '오늘의 딱 1가지 목표 정하기', done: false },
+          { id: 'r3', period: 'day', repeat: '평일', title: '점심 후 5분 바깥 공기 쐬기', done: false },
+          { id: 'r4', period: 'evening', repeat: '매일', title: '내일 입을 옷 / 가방 미리 두기', done: false },
+          { id: 'r5', period: 'night', repeat: '매일', title: '스마트폰 충전기 침대 밖에 꽂기', done: false }
+        ]
+      };
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+          const parsed = JSON.parse(raw);
+          const merged = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+          if (!merged.meds) merged.meds = { morning: false, noon: false, evening: false };
+          if (!Array.isArray(merged.weeklyFocus)) merged.weeklyFocus = [20, 35, 15, 45, 30, 50, 0];
+          if (!Array.isArray(merged.pocket)) merged.pocket = JSON.parse(JSON.stringify(DEFAULT_STATE.pocket));
+          if (!Array.isArray(merged.bills)) merged.bills = JSON.parse(JSON.stringify(DEFAULT_STATE.bills));
+          return merged;
+        } catch (e) {
+          return JSON.parse(JSON.stringify(DEFAULT_STATE));
+        }
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+
+      let state = loadState();
+
+      let timerTotalSec = 5 * 60;
+      let timerRemainingSec = 5 * 60;
+      let timerInterval = null;
+      let timerRunning = false;
+
+      let audioCtx = null;
+      let noiseNode = null;
+      let noiseFilter = null;
+      let noiseGain = null;
+
+      function ensureAudio() {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      function playChime() {
+        try {
+          ensureAudio();
+          if (!audioCtx) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(528, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(660, audioCtx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.9);
+        } catch (e) {}
+      }
+
+      function stopAmbientSound() {
+        if (noiseNode) {
+          try { noiseNode.stop(); } catch (e) {}
+          noiseNode.disconnect();
+          noiseNode = null;
+        }
+        if (noiseFilter) {
+          noiseFilter.disconnect();
+          noiseFilter = null;
+        }
+        if (noiseGain) {
+          noiseGain.disconnect();
+          noiseGain = null;
+        }
+      }
+
+      function applySoundType(type) {
+        if ((type === 'fire' || type === 'cafe') && !state.isPro) {
+          openProModal();
+          return;
+        }
+        state.soundType = type;
+        saveState();
+        stopAmbientSound();
+
+        const toggleBtn = document.getElementById('btn-sound-toggle');
+        document.querySelectorAll('.sound-type-btn').forEach((b) => {
+          const active = b.dataset.sound === type;
+          const isProBtn = b.dataset.pro === 'true';
+          if (active) {
+            b.className = 'sound-type-btn py-1.5 rounded-xl text-xs font-semibold bg-slate-800 text-white' + (b.dataset.sound === 'cafe' ? ' col-span-2' : '');
+          } else if (isProBtn) {
+            b.className = 'sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-amber-50/70 text-amber-900 border border-amber-200' + (b.dataset.sound === 'cafe' ? ' col-span-2' : '');
+          } else {
+            b.className = 'sound-type-btn py-1.5 rounded-xl text-xs font-medium bg-stone-100 text-slate-600';
+          }
+        });
+
+        if (type === 'off') {
+          toggleBtn.textContent = '꺼짐';
+          toggleBtn.setAttribute('aria-pressed', 'false');
+          toggleBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-100 text-slate-700 hover:bg-stone-200 transition';
+          return;
+        }
+
+        ensureAudio();
+        if (!audioCtx) {
+          showToast('이 브라우저에서는 오디오를 지원하지 않습니다.');
+          return;
+        }
+
+        const bufferSize = audioCtx.sampleRate * 2;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = buffer.getChannelData(0);
+        let b0 = 0, b1 = 0, b2 = 0;
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          b0 = 0.99765 * b0 + white * 0.0990460;
+          b1 = 0.96300 * b1 + white * 0.2965164;
+          b2 = 0.57000 * b2 + white * 1.0526913;
+          let sample = (b0 + b1 + b2 + white * 0.1848) * 0.04;
+          if (type === 'fire' && Math.random() < 0.002) {
+            sample += (Math.random() - 0.5) * 0.22;
+          }
+          output[i] = sample;
+        }
+
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = buffer;
+        noiseNode.loop = true;
+
+        noiseFilter = audioCtx.createBiquadFilter();
+        if (type === 'rain') {
+          noiseFilter.type = 'bandpass';
+          noiseFilter.frequency.value = 900;
+          noiseFilter.Q.value = 0.7;
+        } else if (type === 'fire') {
+          noiseFilter.type = 'lowpass';
+          noiseFilter.frequency.value = 340;
+        } else if (type === 'cafe') {
+          noiseFilter.type = 'bandpass';
+          noiseFilter.frequency.value = 600;
+          noiseFilter.Q.value = 0.4;
+        } else {
+          noiseFilter.type = 'lowpass';
+          noiseFilter.frequency.value = 500;
+        }
+
+        noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = 0.45;
+
+        noiseNode.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(audioCtx.destination);
+        noiseNode.start();
+
+        const labels = { wind: '바람 켜짐', rain: '빗소리 켜짐', fire: '모닥불 켜짐', cafe: '카페 켜짐' };
+        toggleBtn.textContent = labels[type] || '켜짐';
+        toggleBtn.setAttribute('aria-pressed', 'true');
+        toggleBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-teal-700 text-white transition';
+      }
+
+      let toastTimer = null;
+      function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.remove('opacity-0');
+        el.classList.add('opacity-100');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          el.classList.remove('opacity-100');
+          el.classList.add('opacity-0');
+        }, 2200);
+      }
+
+      function copyTextFallback(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('클립보드에 복사했습니다.');
+          }).catch(() => {
+            fallbackExecCopy(text);
+          });
+        } else {
+          fallbackExecCopy(text);
+        }
+      }
+
+      function fallbackExecCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('클립보드에 복사했습니다.');
+        } catch (e) {
+          showToast('복사에 실패했습니다.');
+        }
+        ta.remove();
+      }
+
+      function energyLabel(e) {
+        if (e === 'low') return { text: '가벼움', cls: 'bg-emerald-50 text-emerald-800 border-emerald-200' };
+        if (e === 'high') return { text: '집중 필요', cls: 'bg-amber-50 text-amber-800 border-amber-200' };
+        return { text: '보통', cls: 'bg-sky-50 text-sky-800 border-sky-200' };
+      }
+
+      function slotLabel(s) {
+        if (s === 'now') return '지금';
+        if (s === 'morning') return '오전';
+        if (s === 'afternoon') return '오후';
+        if (s === 'evening') return '저녁';
+        return '오늘';
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function setHeaderDate() {
+        const now = new Date();
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        document.getElementById('header-date').textContent =
+          `${now.getMonth() + 1}월 ${now.getDate()}일 (${days[now.getDay()]}) · 한 번에 하나씩`;
+      }
+
+      function applyThemeAndPlanUI() {
+        const badge = document.getElementById('btn-plan-badge');
+        if (state.isPro) {
+          badge.textContent = 'PRO ✨';
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-900 shadow-xs transition';
+        } else {
+          badge.textContent = '무료';
+          badge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-stone-200 text-slate-700 hover:bg-amber-100 hover:text-amber-800 transition';
+        }
+
+        document.querySelectorAll('.pro-lock').forEach((el) => {
+          el.textContent = state.isPro ? 'PRO ✓' : 'PRO 🔒';
+        });
+
+        const shell = document.getElementById('app-shell');
+        shell.classList.toggle('dark-calm', Boolean(state.isPro && state.darkMode));
+        shell.classList.toggle('large-text', Boolean(state.isPro && state.largeText));
+
+        const card = document.getElementById('now-focus-card');
+        const logo = document.getElementById('brand-logo');
+        const t = state.isPro ? state.theme : 'teal';
+        if (t === 'indigo') {
+          card.className = 'rounded-2xl bg-gradient-to-br from-indigo-700 to-indigo-800 text-white p-4 shadow-md';
+          logo.className = 'w-9 h-9 rounded-xl bg-indigo-700 text-white flex items-center justify-center font-bold text-lg shadow-sm';
+        } else if (t === 'slate') {
+          card.className = 'rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white p-4 shadow-md';
+          logo.className = 'w-9 h-9 rounded-xl bg-slate-800 text-white flex items-center justify-center font-bold text-lg shadow-sm';
+        } else {
+          card.className = 'rounded-2xl bg-gradient-to-br from-teal-700 to-teal-800 text-white p-4 shadow-md';
+          logo.className = 'w-9 h-9 rounded-xl bg-teal-700 text-white flex items-center justify-center font-bold text-lg shadow-sm';
+        }
+
+        document.querySelectorAll('.theme-btn').forEach((b) => {
+          const active = b.dataset.theme === t;
+          b.className = active
+            ? 'theme-btn py-2 rounded-xl text-xs font-semibold border border-teal-600 bg-teal-50 text-teal-800'
+            : 'theme-btn py-2 rounded-xl text-xs font-medium border border-stone-200 bg-stone-50 text-slate-700';
+        });
+
+        const cycleBtn = document.getElementById('btn-auto-cycle');
+        if (state.isPro && state.autoCycle) {
+          cycleBtn.textContent = '켜짐';
+          cycleBtn.className = 'px-2.5 py-1 rounded-lg bg-teal-700 text-white text-[11px] font-semibold';
+        } else {
+          cycleBtn.textContent = '꺼짐';
+          cycleBtn.className = 'px-2.5 py-1 rounded-lg bg-stone-200 text-slate-700 text-[11px] font-semibold';
+        }
+      }
+
+      function openProModal() {
+        document.getElementById('pro-modal').classList.remove('hidden');
+      }
+
+      function switchTab(tab) {
+        state.activeTab = tab;
+        saveState();
+        ['today', 'focus', 'dump', 'routines', 'report'].forEach((t) => {
+          const sec = document.getElementById(`view-${t}`);
+          if (t === tab) sec.classList.remove('hidden');
+          else sec.classList.add('hidden');
+        });
+        document.querySelectorAll('.nav-btn').forEach((btn) => {
+          const isCurrent = btn.dataset.tab === tab;
+          btn.className = isCurrent
+            ? 'nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-teal-700 font-semibold bg-teal-50/70'
+            : 'nav-btn flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 hover:text-slate-800';
+        });
+        if (tab === 'report') renderReport();
+      }
+
+      function renderToday() {
+        const doneCount = state.tasks.filter((t) => t.done).length;
+        document.getElementById('header-done-count').textContent = doneCount;
+        document.getElementById('header-focus-mins').textContent = `${state.focusTotalMins || 0}분`;
+
+        // Pocket checklist
+        document.getElementById('pocket-checklist').innerHTML = state.pocket.map((p) => `
+          <button type="button" data-action="toggle-pocket" data-id="${p.id}" class="px-2.5 py-1 rounded-full text-xs font-medium border transition ${p.done ? 'bg-teal-700 text-white border-teal-700 line-through' : 'bg-stone-50 text-slate-700 border-stone-200 hover:bg-stone-100'}">
+            ${escapeHtml(p.label)}
+          </button>
+        `).join('');
+
+        const openTasks = state.tasks.filter((t) => !t.done);
+        document.getElementById('task-counter').textContent = `${openTasks.length}개 남음`;
+
+        const pinned = openTasks.find((t) => t.pinned) || openTasks[0] || null;
+        const nowContent = document.getElementById('now-focus-content');
+        const nowBadge = document.getElementById('now-energy-badge');
+
+        if (!pinned) {
+          nowBadge.textContent = '';
+          nowContent.innerHTML = `
+            <p class="text-base font-bold mb-1">오늘 남은 할 일이 없습니다!</p>
+            <p class="text-xs text-white/80">충분히 잘 해내셨어요. 편히 쉬거나 새 할 일을 추가해 보세요.</p>
+          `;
+        } else {
+          const est = pinned.estMins || 5;
+          nowBadge.textContent = `${slotLabel(pinned.slot)} · ${est}분 · ${energyLabel(pinned.energy).text}`;
+          nowContent.innerHTML = `
+            <p class="text-lg font-bold leading-snug mb-3">${escapeHtml(pinned.title)}</p>
+            <div class="flex gap-2">
+              <button type="button" data-action="start-focus" data-id="${pinned.id}" class="flex-1 py-2.5 px-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 text-xs font-bold transition shadow-xs">
+                5분만 시작하기
+              </button>
+              <button type="button" data-action="complete-now" data-id="${pinned.id}" class="py-2.5 px-4 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition">
+                완료!
+              </button>
+            </div>
+          `;
+        }
+
+        const filtered = state.tasks.filter((t) => {
+          const matchEnergy = state.filterEnergy === 'all' || t.energy === state.filterEnergy;
+          const matchCat = state.filterCategory === 'all' || (t.category || '생활') === state.filterCategory;
+          return matchEnergy && matchCat;
+        });
+
+        filtered.sort((a, b) => {
+          if (a.done !== b.done) return a.done ? 1 : -1;
+          if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+          return 0;
+        });
+
+        const listEl = document.getElementById('task-list');
+        if (filtered.length === 0) {
+          listEl.innerHTML = `
+            <div class="bg-white rounded-2xl p-6 border border-dashed border-stone-300 text-center text-xs text-slate-500">
+              해당 조건의 할 일이 없습니다.
+            </div>
+          `;
+          return;
+        }
+
+        listEl.innerHTML = filtered.map((task) => {
+          const eMeta = energyLabel(task.energy);
+          const stepsHtml = task.steps.length
+            ? `<div class="mt-2.5 pl-7 space-y-1.5 border-l-2 border-stone-100">
+                ${task.steps.map((s) => `
+                  <label class="flex items-center gap-2 text-xs cursor-pointer ${s.done ? 'line-through text-slate-400' : 'text-slate-600'}">
+                    <input type="checkbox" data-action="toggle-step" data-task-id="${task.id}" data-step-id="${s.id}" ${s.done ? 'checked' : ''} class="rounded text-teal-700 focus:ring-teal-600" />
+                    <span>${escapeHtml(s.text)}</span>
+                  </label>
+                `).join('')}
+              </div>`
+            : '';
+
+          return `
+            <div class="bg-white rounded-2xl p-3.5 border ${task.pinned && !task.done ? 'border-teal-400 ring-1 ring-teal-200' : 'border-stone-200'} shadow-xs transition">
+              <div class="flex items-start gap-3">
+                <button type="button" data-action="toggle-task" data-id="${task.id}" aria-label="완료 표시" class="mt-0.5 w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition ${task.done ? 'bg-teal-700 border-teal-700 text-white' : 'border-stone-300 hover:border-teal-600'}">
+                  ${task.done ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                </button>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-sm font-semibold ${task.done ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHtml(task.title)}</span>
+                  </div>
+                  <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                    <span class="px-1.5 py-0.5 rounded-md text-[10px] font-medium border ${eMeta.cls}">${eMeta.text}</span>
+                    <span class="px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-stone-100 text-slate-600">${slotLabel(task.slot)} · ${task.estMins || 15}분</span>
+                    <span class="px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-stone-100 text-slate-600">${escapeHtml(task.category || '생활')}</span>
+                  </div>
+                  ${!task.done ? `
+                    <div class="flex items-center gap-2.5 mt-2 flex-wrap">
+                      <button type="button" data-action="pin-task" data-id="${task.id}" class="text-[11px] font-medium ${task.pinned ? 'text-teal-700' : 'text-slate-400 hover:text-teal-700'}">${task.pinned ? '★ 지금 집중 중' : '☆ 지금 할 일로'}</button>
+                      <button type="button" data-action="add-step" data-id="${task.id}" class="text-[11px] text-slate-400 hover:text-slate-700 font-medium">+ 단계 추가</button>
+                      ${task.steps.length === 0 ? `<button type="button" data-action="auto-split" data-id="${task.id}" class="text-[11px] text-amber-700 hover:text-amber-900 font-medium">⚡ 3단계 쪼개기</button>` : ''}
+                      <button type="button" data-action="focus-est" data-id="${task.id}" class="text-[11px] text-teal-700 hover:underline font-medium">⏱ 타이머</button>
+                    </div>
+                  ` : ''}
+                  ${stepsHtml}
+                  <div id="step-form-${task.id}" class="hidden mt-2 flex gap-1.5">
+                    <input type="text" placeholder="작은 단계 입력 (예: 1분만 보기)" class="step-input flex-1 px-2.5 py-1.5 text-xs rounded-lg bg-stone-50 border border-stone-200 focus:outline-none focus:ring-1 focus:ring-teal-600 text-slate-900" />
+                    <button type="button" data-action="save-step" data-id="${task.id}" class="px-2.5 py-1.5 rounded-lg bg-teal-700 text-white text-xs font-semibold">추가</button>
+                  </div>
+                </div>
+                <button type="button" data-action="delete-task" data-id="${task.id}" aria-label="삭제" class="text-slate-300 hover:text-rose-500 p-1 transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderTimer() {
+        const mins = Math.floor(timerRemainingSec / 60);
+        const secs = timerRemainingSec % 60;
+        document.getElementById('timer-display').textContent =
+          `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+        const circumference = 2 * Math.PI * 88;
+        const ratio = timerTotalSec > 0 ? timerRemainingSec / timerTotalSec : 0;
+        const offset = circumference * (1 - ratio);
+        const ring = document.getElementById('timer-ring');
+        ring.style.strokeDashoffset = offset.toFixed(2);
+        ring.setAttribute('stroke', state.timerMode === 'focus' ? '#0F766E' : '#D97706');
+
+        const activeTask = state.tasks.find((t) => t.id === state.activeFocusTaskId && !t.done);
+        const eyebrow = document.getElementById('timer-mode-eyebrow');
+        const titleEl = document.getElementById('timer-task-title');
+        if (state.timerMode === 'focus') {
+          eyebrow.textContent = '현재 집중할 작업';
+          titleEl.textContent = activeTask ? activeTask.title : '자유 집중 시간';
+        } else if (state.timerMode === 'shortBreak') {
+          eyebrow.textContent = '짧은 휴식 모드';
+          titleEl.textContent = '눈 감고 숨 고르기 · 물 마시기';
+        } else {
+          eyebrow.textContent = '긴 휴식 모드';
+          titleEl.textContent = '자리에서 일어나 가볍게 스트레칭';
+        }
+
+        document.getElementById('focus-sessions-count').textContent = state.focusSessions;
+        document.getElementById('focus-total-mins').textContent = state.focusTotalMins || 0;
+        document.getElementById('header-focus-mins').textContent = `${state.focusTotalMins || 0}분`;
+
+        const btn = document.getElementById('btn-timer-toggle');
+        const label = document.getElementById('timer-status-label');
+        if (timerRunning) {
+          btn.textContent = '잠시 멈춤';
+          label.textContent = state.timerMode === 'focus' ? '집중 중 · 천천히 해도 괜찮아요' : '휴식 중 · 편안히 쉬세요';
+        } else if (timerRemainingSec === 0) {
+          btn.textContent = '다시 시작';
+          label.textContent = '완료! 수고하셨습니다';
+        } else {
+          btn.textContent = timerRemainingSec < timerTotalSec ? '이어서 하기' : '시작하기';
+          label.textContent = '준비됨 · 부담 없이 시작';
+        }
+      }
+
+      function setTimerDuration(minutes) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerTotalSec = minutes * 60;
+        timerRemainingSec = minutes * 60;
+        document.querySelectorAll('.preset-btn').forEach((b) => {
+          const active = Number(b.dataset.mins) === minutes;
+          b.className = active
+            ? 'preset-btn py-2 rounded-xl text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-300'
+            : 'preset-btn py-2 rounded-xl text-xs font-medium bg-stone-100 text-slate-700 hover:bg-stone-200';
+        });
+        renderTimer();
+      }
+
+      function switchTimerMode(mode) {
+        state.timerMode = mode;
+        saveState();
+        document.querySelectorAll('.mode-btn').forEach((b) => {
+          const active = b.dataset.mode === mode;
+          b.className = active
+            ? 'mode-btn py-2 rounded-xl text-xs font-bold bg-white text-teal-800 shadow-xs'
+            : 'mode-btn py-2 rounded-xl text-xs font-medium text-slate-600';
+        });
+        if (mode === 'focus') setTimerDuration(25);
+        else if (mode === 'shortBreak') setTimerDuration(5);
+        else setTimerDuration(15);
+      }
+
+      function toggleTimer() {
+        if (timerRunning) {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          renderTimer();
+          return;
+        }
+        if (timerRemainingSec === 0) {
+          timerRemainingSec = timerTotalSec;
+        }
+        ensureAudio();
+        timerRunning = true;
+        renderTimer();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          if (timerRemainingSec > 0) {
+            timerRemainingSec -= 1;
+            renderTimer();
+          }
+          if (timerRemainingSec === 0) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            playChime();
+            if (state.timerMode === 'focus') {
+              const added = Math.round(timerTotalSec / 60);
+              state.focusSessions += 1;
+              state.focusTotalMins = (state.focusTotalMins || 0) + added;
+              state.weeklyFocus[6] = state.focusTotalMins;
+              saveState();
+              if (state.isPro && state.autoCycle) {
+                switchTimerMode('shortBreak');
+                showToast('집중 완료! 5분 휴식으로 자동 전환합니다.');
+                toggleTimer();
+                return;
+              }
+              showToast('집중 시간 완료! 5분 휴식으로 넘어가 볼까요?');
+            } else {
+              showToast('휴식 끝! 다시 가볍게 시작해 봐요.');
+            }
+            renderTimer();
+          }
+        }, 1000);
+      }
+
+      function renderDumps() {
+        const listEl = document.getElementById('dump-list');
+        const q = (state.dumpSearch || '').trim().toLowerCase();
+        const filtered = state.dumps.filter((d) => {
+          const matchFilter =
+            state.dumpFilter === 'all' ||
+            (state.dumpFilter === 'urgent' ? d.urgent : d.tag === state.dumpFilter);
+          const matchSearch = !q || d.text.toLowerCase().includes(q) || d.tag.toLowerCase().includes(q);
+          return matchFilter && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+          listEl.innerHTML = `
+            <div class="bg-white rounded-2xl p-6 border border-dashed border-stone-300 text-center text-xs text-slate-500">
+              조건에 맞는 생각 메모가 없습니다.
+            </div>
+          `;
+          return;
+        }
+
+        listEl.innerHTML = filtered.map((d) => `
+          <div class="bg-white rounded-2xl p-3.5 border ${d.urgent ? 'border-amber-300 bg-amber-50/20' : 'border-stone-200'} shadow-xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <p class="text-sm text-slate-800 leading-relaxed whitespace-pre-wrap">${d.urgent ? '<span class="text-amber-600 font-bold mr-1">★</span>' : ''}${escapeHtml(d.text)}</p>
+              <button type="button" data-action="delete-dump" data-id="${d.id}" aria-label="메모 삭제" class="text-slate-300 hover:text-rose-500 p-1 shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="flex items-center justify-between pt-1 flex-wrap gap-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded-md bg-stone-100 text-slate-600 text-[11px] font-medium">${escapeHtml(d.tag)} · ${escapeHtml(d.createdAt)}</span>
+                <button type="button" data-action="toggle-dump-urgent" data-id="${d.id}" class="text-[11px] ${d.urgent ? 'text-amber-600 font-semibold' : 'text-slate-400 hover:text-amber-600'}">${d.urgent ? '중요 해제' : '중요 표시'}</button>
+                <button type="button" data-action="copy-dump" data-id="${d.id}" class="text-[11px] text-slate-400 hover:text-slate-700">복사</button>
+              </div>
+              <button type="button" data-action="move-to-task" data-id="${d.id}" class="text-xs font-semibold text-teal-700 hover:underline">
+                오늘 할 일로 보내기 →
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderRoutines() {
+        const total = state.routines.length;
+        const done = state.routines.filter((r) => r.done).length;
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+        document.getElementById('routine-progress-text').textContent = `${pct}% (${done}/${total})`;
+        document.getElementById('routine-progress-bar').style.width = `${pct}%`;
+
+        const medSlots = [
+          { key: 'morning', label: '아침 복용' },
+          { key: 'noon', label: '점심 복용' },
+          { key: 'evening', label: '저녁 복용' }
+        ];
+        const wCount = state.waterGlasses || 0;
+        document.getElementById('water-count').textContent = wCount;
+        document.getElementById('water-tracker').innerHTML = Array.from({ length: 8 }, (_, idx) => {
+          const filled = idx < wCount;
+          return `<button type="button" data-water="${idx + 1}" class="py-1.5 rounded-lg text-xs border transition ${filled ? 'bg-sky-500 text-white border-sky-500' : 'bg-stone-50 text-slate-400 border-stone-200'}">💧</button>`;
+        }).join('');
+
+        document.getElementById('med-tracker').innerHTML = medSlots.map((m) => {
+          const checked = Boolean(state.meds && state.meds[m.key]);
+          return `
+            <button type="button" data-med="${m.key}" class="med-btn py-2 px-2 rounded-xl text-xs font-semibold border transition ${checked ? 'bg-teal-700 text-white border-teal-700' : 'bg-stone-50 text-slate-600 border-stone-200 hover:bg-stone-100'}">
+              ${checked ? '✓ ' : ''}${m.label}
+            </button>
+          `;
+        }).join('');
+
+        const groups = [
+          { key: 'morning', title: '아침 기상', icon: '☀️' },
+          { key: 'day', title: '낮 · 외출', icon: '🌤️' },
+          { key: 'evening', title: '저녁 귀가', icon: '🌆' },
+          { key: 'night', title: '잠들기 전', icon: '🌙' }
+        ];
+
+        document.getElementById('routine-lists').innerHTML = groups.map((g) => {
+          const items = state.routines.filter((r) => r.period === g.key);
+          return `
+            <div class="space-y-2">
+              <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">${g.icon} ${g.title}</h3>
+              ${items.length === 0 ? '<p class="text-xs text-slate-400 px-1">등록된 루틴이 없습니다.</p>' : items.map((r) => `
+                <div class="bg-white rounded-2xl px-3.5 py-3 border border-stone-200 flex items-center justify-between gap-3">
+                  <label class="flex items-center gap-3 flex-1 cursor-pointer">
+                    <input type="checkbox" data-action="toggle-routine" data-id="${r.id}" ${r.done ? 'checked' : ''} class="w-5 h-5 rounded-md text-teal-700 focus:ring-teal-600" />
+                    <div class="flex flex-col">
+                      <span class="text-sm font-medium ${r.done ? 'line-through text-slate-400' : 'text-slate-800'}">${escapeHtml(r.title)}</span>
+                      <span class="text-[10px] text-slate-400">${escapeHtml(r.repeat || '매일')}</span>
+                    </div>
+                  </label>
+                  <button type="button" data-action="delete-routine" data-id="${r.id}" aria-label="루틴 삭제" class="text-slate-300 hover:text-rose-500 p-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderReport() {
+        const doneCount = state.tasks.filter((t) => t.done).length;
+        const rTotal = state.routines.length;
+        const rDone = state.routines.filter((r) => r.done).length;
+        const rPct = rTotal > 0 ? Math.round((rDone / rTotal) * 100) : 0;
+
+        document.getElementById('rep-done-tasks').textContent = `${doneCount}개`;
+        document.getElementById('rep-focus-mins').textContent = `${state.focusTotalMins || 0}분`;
+        document.getElementById('rep-routine-pct').textContent = `${rPct}%`;
+
+        const moodNames = { low: '🪫 방전·피곤 기록됨', ok: '😌 무난·보통 기록됨', good: '⚡ 집중·좋음 기록됨' };
+        document.getElementById('mood-saved-label').textContent = state.mood ? moodNames[state.mood] : '선택해 주세요';
+        document.querySelectorAll('.mood-btn').forEach((b) => {
+          const active = b.dataset.mood === state.mood;
+          b.className = active
+            ? 'mood-btn py-2.5 px-2 rounded-xl border-2 border-teal-600 bg-teal-50 text-xs font-bold text-teal-900'
+            : 'mood-btn py-2.5 px-2 rounded-xl border border-stone-200 bg-stone-50 text-xs font-medium text-slate-700 hover:bg-stone-100';
+        });
+
+        // Pro Locks & Banner
+        const lockEl = document.getElementById('pro-report-lock');
+        const billLock = document.getElementById('pro-bill-lock');
+        const bannerEl = document.getElementById('report-pro-banner');
+        if (state.isPro) {
+          lockEl.classList.add('hidden');
+          billLock.classList.add('hidden');
+          bannerEl.classList.add('hidden');
+        } else {
+          lockEl.classList.remove('hidden');
+          billLock.classList.remove('hidden');
+          bannerEl.classList.remove('hidden');
+        }
+
+        // Bills D-Day List
+        const todayDate = new Date().getDate();
+        document.getElementById('bill-list').innerHTML = state.bills.map((b) => {
+          const diff = b.day - todayDate;
+          const dLabel = diff === 0 ? 'D-Day' : (diff > 0 ? `D-${diff}` : `D+${Math.abs(diff)}`);
+          return `
+            <div class="flex items-center justify-between px-2.5 py-2 rounded-xl bg-stone-50 border border-stone-200 text-xs">
+              <label class="flex items-center gap-2 cursor-pointer flex-1">
+                <input type="checkbox" data-action="toggle-bill" data-id="${b.id}" ${b.done ? 'checked' : ''} class="rounded text-teal-700" />
+                <span class="${b.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${escapeHtml(b.title)}</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-[10px]">매월 ${b.day}일 (${dLabel})</span>
+                <button type="button" data-action="delete-bill" data-id="${b.id}" class="text-slate-400 hover:text-rose-500">✕</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Weekly chart
+        const data = state.weeklyFocus.slice(0, 6).concat([state.focusTotalMins || 0]);
+        const maxVal = Math.max(50, ...data);
+        const dayLabels = ['6일전', '5일전', '4일전', '3일전', '2일전', '어제', '오늘'];
+        document.getElementById('weekly-chart').innerHTML = data.map((val, idx) => {
+          const hPct = Math.max(10, Math.round((val / maxVal) * 100));
+          const isToday = idx === 6;
+          return `
+            <div class="flex flex-col items-center gap-1 h-full justify-end">
+              <span class="text-[9px] text-slate-400 tabular-nums">${val}m</span>
+              <div class="w-full rounded-t-lg transition-all ${isToday ? 'bg-teal-600' : 'bg-stone-300'}" style="height: ${hPct}%"></div>
+              <span class="text-[10px] ${isToday ? 'font-bold text-teal-700' : 'text-slate-400'}">${dayLabels[idx]}</span>
+            </div>
+          `;
+        }).join('');
+
+        const totalWeek = data.reduce((a, b) => a + b, 0);
+        document.getElementById('rep-insight').textContent =
+          `이번 주 누적 집중 시간은 ${totalWeek}분입니다. ${state.mood === 'low' ? '오늘은 에너지가 낮은 날이니 "가벼움" 할 일 1개만 해도 충분합니다.' : '짧은 5분 시작과 루틴 체크가 꾸준한 리듬을 만들고 있어요.'}`;
+      }
+
+      function renderAll() {
+        applyThemeAndPlanUI();
+        renderToday();
+        renderTimer();
+        renderDumps();
+        renderRoutines();
+        renderReport();
+      }
+
+      // Navigation
+      document.querySelectorAll('.nav-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Pocket Checklist
+      document.getElementById('pocket-checklist').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="toggle-pocket"]');
+        if (!btn) return;
+        const item = state.pocket.find((p) => p.id === btn.dataset.id);
+        if (item) {
+          item.done = !item.done;
+          saveState();
+          renderToday();
+        }
+      });
+      document.getElementById('btn-reset-pocket').addEventListener('click', () => {
+        state.pocket.forEach((p) => { p.done = false; });
+        saveState();
+        renderToday();
+        showToast('소지품 체크를 초기화했습니다.');
+      });
+
+      // Pro Modal & Plan Switching
+      document.getElementById('btn-plan-badge').addEventListener('click', openProModal);
+      document.getElementById('btn-close-pro').addEventListener('click', () => document.getElementById('pro-modal').classList.add('hidden'));
+      document.getElementById('pro-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'pro-modal') e.target.classList.add('hidden');
+      });
+      document.querySelectorAll('[data-open-pro="true"]').forEach((btn) => {
+        btn.addEventListener('click', openProModal);
+      });
+      document.querySelectorAll('.billing-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.billingPlan = btn.dataset.billing;
+          saveState();
+          document.querySelectorAll('.billing-btn').forEach((b) => {
+            const active = b.dataset.billing === state.billingPlan;
+            b.className = active
+              ? 'billing-btn p-3 rounded-xl border-2 border-amber-500 bg-amber-50/50 text-left relative'
+              : 'billing-btn p-3 rounded-xl border border-stone-200 bg-stone-50 text-left relative';
+          });
+        });
+      });
+
+      document.getElementById('btn-activate-pro').addEventListener('click', () => {
+        state.isPro = true;
+        saveState();
+        document.getElementById('pro-modal').classList.add('hidden');
+        renderAll();
+        showToast('한걸음 Pro 7일 체험이 활성화되었습니다! ✨');
+      });
+
+      document.getElementById('btn-toggle-plan-dev').addEventListener('click', () => {
+        state.isPro = !state.isPro;
+        saveState();
+        if (!state.isPro && (state.soundType === 'fire' || state.soundType === 'cafe')) {
+          applySoundType('off');
+        }
+        renderAll();
+        document.getElementById('settings-modal').classList.add('hidden');
+        showToast(state.isPro ? 'Pro 버전으로 전환했습니다.' : '무료 버전으로 전환했습니다.');
+      });
+
+      // Pro Accessibility & Theme
+      document.getElementById('btn-toggle-dark').addEventListener('click', () => {
+        if (!state.isPro) {
+          document.getElementById('settings-modal').classList.add('hidden');
+          openProModal();
+          return;
+        }
+        state.darkMode = !state.darkMode;
+        saveState();
+        applyThemeAndPlanUI();
+        showToast(state.darkMode ? '다크 모드를 켰습니다.' : '다크 모드를 껐습니다.');
+      });
+
+      document.getElementById('btn-toggle-large').addEventListener('click', () => {
+        if (!state.isPro) {
+          document.getElementById('settings-modal').classList.add('hidden');
+          openProModal();
+          return;
+        }
+        state.largeText = !state.largeText;
+        saveState();
+        applyThemeAndPlanUI();
+        showToast(state.largeText ? '큰 글씨 모드를 켰습니다.' : '기본 글씨 크기로 돌아갑니다.');
+      });
+
+      document.getElementById('btn-auto-cycle').addEventListener('click', () => {
+        if (!state.isPro) {
+          openProModal();
+          return;
+        }
+        state.autoCycle = !state.autoCycle;
+        saveState();
+        applyThemeAndPlanUI();
+        showToast(state.autoCycle ? '집중 후 자동 휴식 전환을 켰습니다.' : '자동 휴식 전환을 껐습니다.');
+      });
+
+      document.querySelectorAll('.theme-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (btn.dataset.pro === 'true' && !state.isPro) {
+            document.getElementById('settings-modal').classList.add('hidden');
+            openProModal();
+            return;
+          }
+          state.theme = btn.dataset.theme;
+          saveState();
+          applyThemeAndPlanUI();
+          showToast('테마 색상을 변경했습니다.');
+        });
+      });
+
+      document.getElementById('btn-export-data').addEventListener('click', () => {
+        if (!state.isPro) {
+          document.getElementById('settings-modal').classList.add('hidden');
+          openProModal();
+          return;
+        }
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'onestep_backup.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        showToast('내 기록 백업 파일(JSON)을 저장했습니다.');
+      });
+
+      // Energy selector
+      document.querySelectorAll('.energy-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedEnergy = btn.dataset.energy;
+          document.querySelectorAll('.energy-select-btn').forEach((b) => {
+            const active = b.dataset.energy === state.selectedEnergy;
+            b.className = active
+              ? 'energy-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-300'
+              : 'energy-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent';
+          });
+        });
+      });
+
+      document.getElementById('btn-toggle-details').addEventListener('click', () => {
+        document.getElementById('task-details-drawer').classList.toggle('hidden');
+      });
+      document.getElementById('btn-toggle-templates').addEventListener('click', () => {
+        document.getElementById('templates-drawer').classList.toggle('hidden');
+      });
+
+      document.querySelectorAll('.filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.filterEnergy = btn.dataset.filter;
+          document.querySelectorAll('.filter-btn').forEach((b) => {
+            const active = b.dataset.filter === state.filterEnergy;
+            b.className = active
+              ? 'filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800 text-white'
+              : 'filter-btn px-3 py-1.5 rounded-full text-xs font-medium bg-white border border-stone-200 text-slate-600';
+          });
+          renderToday();
+        });
+      });
+
+      document.querySelectorAll('.cat-filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.filterCategory = btn.dataset.catFilter;
+          document.querySelectorAll('.cat-filter-btn').forEach((b) => {
+            const active = b.dataset.catFilter === state.filterCategory;
+            b.className = active
+              ? 'cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-teal-700 text-white'
+              : 'cat-filter-btn px-2.5 py-1 rounded-lg text-[11px] font-medium bg-white border border-stone-200 text-slate-600';
+          });
+          renderToday();
+        });
+      });
+
+      document.querySelectorAll('.template-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tpl = btn.dataset.template;
+          const uid = Date.now().toString(36);
+          const presets = {
+            clean: {
+              title: '책상 5분 정리하기',
+              energy: 'low',
+              slot: 'now',
+              category: '생활',
+              estMins: 5,
+              steps: [
+                { id: uid + '1', text: '쓰레기만 먼저 버리기', done: false },
+                { id: uid + '2', text: '사용한 컵/그릇 치우기', done: false },
+                { id: uid + '3', text: '노트북/책 한쪽으로 모으기', done: false }
+              ]
+            },
+            outing: {
+              title: '외출 전 3가지 체크',
+              energy: 'low',
+              slot: 'morning',
+              category: '약속',
+              estMins: 5,
+              steps: [
+                { id: uid + '1', text: '지갑·열쇠·휴대폰 챙기기', done: false },
+                { id: uid + '2', text: '가스/전등/창문 확인', done: false },
+                { id: uid + '3', text: '보조배터리 또는 이어폰 확인', done: false }
+              ]
+            },
+            work: {
+              title: '업무·공부 시동 걸기',
+              energy: 'mid',
+              slot: 'morning',
+              category: '업무',
+              estMins: 15,
+              steps: [
+                { id: uid + '1', text: '작업할 파일/노트만 켜두기', done: false },
+                { id: uid + '2', text: '휴대폰 화면 아래로 뒤집기', done: false },
+                { id: uid + '3', text: '5분 타이머 켜고 첫 줄 시작', done: false }
+              ]
+            },
+            admin: {
+              title: '공과금·서류 1건 처리하기',
+              energy: 'mid',
+              slot: 'afternoon',
+              category: '약속',
+              estMins: 15,
+              steps: [
+                { id: uid + '1', text: '고지서/앱 알림 열기', done: false },
+                { id: uid + '2', text: '계좌/카드 확인 후 이체하기', done: false },
+                { id: uid + '3', text: '완료 스크린샷 또는 체크 남기기', done: false }
+              ]
+            }
+          };
+          const item = presets[tpl];
+          if (item) {
+            state.tasks.unshift(Object.assign({ id: 't_' + uid, done: false, pinned: false }, item));
+            saveState();
+            renderToday();
+            document.getElementById('templates-drawer').classList.add('hidden');
+            showToast('작은 단계가 포함된 할 일을 추가했어요!');
+          }
+        });
+      });
+
+      document.getElementById('task-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('task-input');
+        const title = input.value.trim();
+        if (!title) return;
+        state.tasks.unshift({
+          id: 't_' + Date.now().toString(36),
+          title,
+          energy: state.selectedEnergy,
+          slot: document.getElementById('task-slot').value,
+          category: document.getElementById('task-category').value,
+          estMins: Number(document.getElementById('task-mins').value) || 15,
+          done: false,
+          pinned: state.tasks.filter((t) => !t.done).length === 0,
+          steps: []
+        });
+        input.value = '';
+        saveState();
+        renderToday();
+        showToast('할 일을 추가했습니다.');
+      });
+
+      document.getElementById('view-today').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const action = btn.dataset.action;
+        const id = btn.dataset.id;
+
+        if (action === 'toggle-task' || action === 'complete-now') {
+          const task = state.tasks.find((t) => t.id === id);
+          if (task) {
+            task.done = action === 'complete-now' ? true : !task.done;
+            if (task.done) {
+              task.pinned = false;
+              playChime();
+              showToast('좋아요! 한 걸음 해냈습니다.');
+            }
+            saveState();
+            renderToday();
+          }
+        } else if (action === 'pin-task') {
+          state.tasks.forEach((t) => { t.pinned = t.id === id; });
+          saveState();
+          renderToday();
+          showToast('지금 집중할 할 일로 올렸습니다.');
+        } else if (action === 'delete-task') {
+          state.tasks = state.tasks.filter((t) => t.id !== id);
+          saveState();
+          renderToday();
+        } else if (action === 'start-focus') {
+          state.activeFocusTaskId = id;
+          saveState();
+          switchTimerMode('focus');
+          setTimerDuration(5);
+          switchTab('focus');
+          toggleTimer();
+        } else if (action === 'focus-est') {
+          const task = state.tasks.find((t) => t.id === id);
+          state.activeFocusTaskId = id;
+          saveState();
+          switchTimerMode('focus');
+          setTimerDuration((task && task.estMins) || 15);
+          switchTab('focus');
+        } else if (action === 'auto-split') {
+          const task = state.tasks.find((t) => t.id === id);
+          if (task && task.steps.length === 0) {
+            const uid = Date.now().toString(36);
+            task.steps = [
+              { id: uid + 'a', text: '1단계: 필요한 것만 눈앞에 꺼내두기', done: false },
+              { id: uid + 'b', text: '2단계: 딱 5분만 부담 없이 손대기', done: false },
+              { id: uid + 'c', text: '3단계: 마무리하고 체크 표시하기', done: false }
+            ];
+            saveState();
+            renderToday();
+            showToast('3개의 작은 단계로 쪼개졌어요!');
+          }
+        } else if (action === 'add-step') {
+          const box = document.getElementById(`step-form-${id}`);
+          if (box) {
+            box.classList.toggle('hidden');
+            const inp = box.querySelector('.step-input');
+            if (!box.classList.contains('hidden') && inp) inp.focus();
+          }
+        } else if (action === 'save-step') {
+          const box = document.getElementById(`step-form-${id}`);
+          const inp = box.querySelector('.step-input');
+          const text = inp.value.trim();
+          if (!text) return;
+          const task = state.tasks.find((t) => t.id === id);
+          if (task) {
+            task.steps.push({ id: 's_' + Date.now().toString(36), text, done: false });
+            saveState();
+            renderToday();
+          }
+        }
+      });
+
+      document.getElementById('view-today').addEventListener('change', (e) => {
+        if (e.target.dataset.action === 'toggle-step') {
+          const task = state.tasks.find((t) => t.id === e.target.dataset.taskId);
+          if (!task) return;
+          const step = task.steps.find((s) => s.id === e.target.dataset.stepId);
+          if (step) {
+            step.done = e.target.checked;
+            saveState();
+            renderToday();
+          }
+        }
+      });
+
+      // Timer Controls
+      document.querySelectorAll('.mode-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchTimerMode(btn.dataset.mode));
+      });
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => setTimerDuration(Number(btn.dataset.mins)));
+      });
+      document.getElementById('btn-minus-1m').addEventListener('click', () => {
+        timerRemainingSec = Math.max(60, timerRemainingSec - 60);
+        if (!timerRunning) timerTotalSec = Math.max(timerTotalSec, timerRemainingSec);
+        renderTimer();
+      });
+      document.getElementById('btn-plus-1m').addEventListener('click', () => {
+        timerRemainingSec += 60;
+        timerTotalSec = Math.max(timerTotalSec, timerRemainingSec);
+        renderTimer();
+      });
+      document.getElementById('btn-timer-toggle').addEventListener('click', toggleTimer);
+      document.getElementById('btn-timer-reset').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        timerRemainingSec = timerTotalSec;
+        renderTimer();
+      });
+
+      document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+        applySoundType(state.soundType === 'off' ? 'wind' : 'off');
+      });
+      document.querySelectorAll('.sound-type-btn').forEach((btn) => {
+        btn.addEventListener('click', () => applySoundType(btn.dataset.sound));
+      });
+
+      // Brain Dump
+      document.querySelectorAll('.tag-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedTag = btn.dataset.tag;
+          document.querySelectorAll('.tag-select-btn').forEach((b) => {
+            const active = b.dataset.tag === state.selectedTag;
+            b.className = active
+              ? 'tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-teal-50 text-teal-800 border border-teal-300'
+              : 'tag-select-btn px-2 py-1 rounded-lg text-xs font-medium bg-stone-100 text-slate-600 border border-transparent';
+          });
+        });
+      });
+
+      document.getElementById('dump-search').addEventListener('input', (e) => {
+        state.dumpSearch = e.target.value;
+        renderDumps();
+      });
+
+      document.querySelectorAll('.dump-filter-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.dumpFilter = btn.dataset.dumpFilter;
+          document.querySelectorAll('.dump-filter-btn').forEach((b) => {
+            const active = b.dataset.dumpFilter === state.dumpFilter;
+            b.className = active
+              ? 'dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-800 text-white'
+              : 'dump-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-white border border-stone-200 text-slate-600';
+          });
+          renderDumps();
+        });
+      });
+
+      document.getElementById('dump-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('dump-input');
+        const text = input.value.trim();
+        if (!text) return;
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        state.dumps.unshift({
+          id: 'd_' + Date.now().toString(36),
+          text,
+          tag: state.selectedTag,
+          urgent: document.getElementById('dump-urgent').checked,
+          createdAt: timeStr
+        });
+        input.value = '';
+        document.getElementById('dump-urgent').checked = false;
+        saveState();
+        renderDumps();
+        showToast('생각을 메모함에 안전하게 보관했어요.');
+      });
+
+      document.getElementById('dump-list').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const id = btn.dataset.id;
+        if (btn.dataset.action === 'delete-dump') {
+          state.dumps = state.dumps.filter((d) => d.id !== id);
+          saveState();
+          renderDumps();
+        } else if (btn.dataset.action === 'copy-dump') {
+          const item = state.dumps.find((d) => d.id === id);
+          if (item) copyTextFallback(item.text);
+        } else if (btn.dataset.action === 'toggle-dump-urgent') {
+          const item = state.dumps.find((d) => d.id === id);
+          if (item) {
+            item.urgent = !item.urgent;
+            saveState();
+            renderDumps();
+          }
+        } else if (btn.dataset.action === 'move-to-task') {
+          const item = state.dumps.find((d) => d.id === id);
+          if (!item) return;
+          state.tasks.unshift({
+            id: 't_' + Date.now().toString(36),
+            title: item.text,
+            energy: 'low',
+            slot: 'now',
+            category: item.tag === '살 것' ? '생활' : '약속',
+            estMins: 15,
+            done: false,
+            pinned: false,
+            steps: []
+          });
+          state.dumps = state.dumps.filter((d) => d.id !== id);
+          saveState();
+          renderAll();
+          showToast('오늘 할 일 목록으로 옮겼습니다.');
+        }
+      });
+
+      // Routines & Meds
+      document.getElementById('med-tracker').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-med]');
+        if (!btn) return;
+        const k = btn.dataset.med;
+        state.meds[k] = !state.meds[k];
+        saveState();
+        renderRoutines();
+      });
+
+      document.getElementById('routine-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('routine-input');
+        const period = document.getElementById('routine-period').value;
+        const repeat = document.getElementById('routine-repeat').value;
+        const title = input.value.trim();
+        if (!title) return;
+        state.routines.push({
+          id: 'r_' + Date.now().toString(36),
+          period,
+          repeat,
+          title,
+          done: false
+        });
+        input.value = '';
+        saveState();
+        renderRoutines();
+      });
+
+      document.getElementById('routine-lists').addEventListener('change', (e) => {
+        if (e.target.dataset.action === 'toggle-routine') {
+          const r = state.routines.find((item) => item.id === e.target.dataset.id);
+          if (r) {
+            r.done = e.target.checked;
+            saveState();
+            renderRoutines();
+          }
+        }
+      });
+
+      document.getElementById('routine-lists').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="delete-routine"]');
+        if (!btn) return;
+        state.routines = state.routines.filter((r) => r.id !== btn.dataset.id);
+        saveState();
+        renderRoutines();
+      });
+
+      document.getElementById('btn-reset-routines').addEventListener('click', () => {
+        state.routines.forEach((r) => { r.done = false; });
+        state.meds = { morning: false, noon: false, evening: false };
+        saveState();
+        renderRoutines();
+        showToast('오늘 루틴과 복용 체크를 초기화했습니다.');
+      });
+
+      // Report Mood & Bills
+      document.querySelectorAll('.mood-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.mood = btn.dataset.mood;
+          saveState();
+          renderReport();
+          showToast('오늘의 컨디션을 기록했습니다.');
+        });
+      });
+
+      document.getElementById('bill-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!state.isPro) {
+          openProModal();
+          return;
+        }
+        const title = document.getElementById('bill-title').value.trim();
+        const day = Math.min(31, Math.max(1, Number(document.getElementById('bill-day').value) || 1));
+        if (!title) return;
+        state.bills.push({ id: 'b_' + Date.now().toString(36), title, day, done: false });
+        document.getElementById('bill-title').value = '';
+        document.getElementById('bill-day').value = '';
+        saveState();
+        renderReport();
+      });
+
+      document.getElementById('bill-list').addEventListener('change', (e) => {
+        if (e.target.dataset.action === 'toggle-bill') {
+          const item = state.bills.find((b) => b.id === e.target.dataset.id);
+          if (item) {
+            item.done = e.target.checked;
+            saveState();
+            renderReport();
+          }
+        }
+      });
+
+      document.getElementById('bill-list').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="delete-bill"]');
+        if (!btn) return;
+        state.bills = state.bills.filter((b) => b.id !== btn.dataset.id);
+        saveState();
+        renderReport();
+      });
+
+      // Settings Modal
+      const modal = document.getElementById('settings-modal');
+      document.getElementById('btn-open-settings').addEventListener('click', () => modal.classList.remove('hidden'));
+      document.getElementById('btn-close-settings').addEventListener('click', () => modal.classList.add('hidden'));
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+      });
+
+      document.getElementById('btn-clear-done').addEventListener('click', () => {
+        state.tasks = state.tasks.filter((t) => !t.done);
+        saveState();
+        renderToday();
+        modal.classList.add('hidden');
+        showToast('완료된 할 일을 정리했습니다.');
+      });
+
+      document.getElementById('btn-reset-all').addEventListener('click', () => {
+        state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+        saveState();
+        renderAll();
+        switchTab('today');
+        modal.classList.add('hidden');
+        showToast('기본 샘플 상태로 초기화했습니다.');
+      });
+
+      // Water Tracker
+      document.getElementById('water-tracker').addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-water]');
+        if (!btn) return;
+        const val = Number(btn.dataset.water);
+        state.waterGlasses = state.waterGlasses === val ? val - 1 : val;
+        saveState();
+        renderRoutines();
+      });
+      document.getElementById('btn-water-reset').addEventListener('click', () => {
+        state.waterGlasses = 0;
+        saveState();
+        renderRoutines();
+      });
+
+      // 4-4-4 Breathing Guide
+      let breathInterval = null;
+      let breathRunning = false;
+      document.getElementById('btn-breath-toggle').addEventListener('click', () => {
+        const btn = document.getElementById('btn-breath-toggle');
+        const txt = document.getElementById('breath-guide-text');
+        const bar = document.getElementById('breath-bar');
+        if (breathRunning) {
+          clearInterval(breathInterval);
+          breathRunning = false;
+          btn.textContent = '시작';
+          txt.textContent = '산만하거나 답답할 때 4초씩 천천히';
+          bar.style.width = '0%';
+          return;
+        }
+        breathRunning = true;
+        btn.textContent = '멈춤';
+        let sec = 0;
+        const step = () => {
+          const phase = Math.floor((sec % 12) / 4);
+          const count = (sec % 4) + 1;
+          if (phase === 0) {
+            txt.textContent = `코로 천천히 들이마시기... (${count}/4초)`;
+            bar.style.width = `${count * 25}%`;
+          } else if (phase === 1) {
+            txt.textContent = `잠시 편안히 멈추기... (${count}/4초)`;
+            bar.style.width = '100%';
+          } else {
+            txt.textContent = `입으로 길게 내쉬기... (${count}/4초)`;
+            bar.style.width = `${100 - count * 25}%`;
+          }
+          sec += 1;
+        };
+        step();
+        clearInterval(breathInterval);
+        breathInterval = setInterval(step, 1000);
+      });
+
+      // Import JSON Backup
+      document.getElementById('input-import-data').addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(String(reader.result));
+            if (parsed && Array.isArray(parsed.tasks)) {
+              state = Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+              saveState();
+              renderAll();
+              document.getElementById('settings-modal').classList.add('hidden');
+              showToast('백업 데이터를 성공적으로 복원했습니다!');
+            } else {
+              showToast('올바른 한걸음 백업 파일이 아닙니다.');
+            }
+          } catch (err) {
+            showToast('파일을 읽는 중 오류가 발생했습니다.');
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+      });
+
+      // Init
+      setHeaderDate();
+      switchTab(state.activeTab || 'today');
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
